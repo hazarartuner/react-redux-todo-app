@@ -26,6 +26,8 @@
     "eslint-plugin-prettier": "3.0.1",
     "eslint-plugin-react": "7.12.4",
     "html-webpack-plugin": "3.2.0",
+    "husky": "2.1.0",
+    "lint-staged": "8.1.5",
     "node-sass": "4.11.0",
     "prettier": "1.17.0",
     "sass-loader": "7.1.0",
@@ -38,5 +40,18 @@
   "dependencies": {
     "react": "16.8.6",
     "react-dom": "16.8.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{js,json,scss,md}": [
+        "prettier --write",
+        "git add"
+      ]
+    }
   }
 }
