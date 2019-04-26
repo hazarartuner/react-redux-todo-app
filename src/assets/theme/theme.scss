@@ -1,0 +1,26 @@
+@import './variables';
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+body {
+  color: $color-secondary;
+  font-size: 1.7rem;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.0374em;
+  background: $color-primary;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
+    'Arial', sans-serif;
+}

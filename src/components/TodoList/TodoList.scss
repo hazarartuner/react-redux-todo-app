@@ -1,0 +1,40 @@
+@import '../../assets/theme/theme.scss';
+
+.todo-list__component {
+  .list-footer {
+    display: flex;
+    padding: 1rem 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+
+    .filter-list {
+      display: flex;
+
+      .filter-item {
+        label {
+          padding: 0 1.5rem;
+          cursor: pointer;
+        }
+
+        input {
+          display: none;
+        }
+
+        &.checked {
+          border: solid 0.1rem $color-secondary;
+          border-radius: 0.7rem;
+        }
+      }
+    }
+
+    .toggle-visibility {
+      border: 0;
+      background: none;
+      font-size: inherit;
+      color: inherit;
+      line-height: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+    }
+  }
+}
