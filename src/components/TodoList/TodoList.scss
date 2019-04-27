@@ -11,6 +11,8 @@
       display: flex;
 
       .filter-item {
+        border: solid 0.1rem transparent;
+
         label {
           padding: 0 1.5rem;
           cursor: pointer;
@@ -21,13 +23,14 @@
         }
 
         &.checked {
-          border: solid 0.1rem $color-secondary;
+          border-color: $color-secondary;
           border-radius: 0.7rem;
         }
       }
     }
 
     .toggle-visibility {
+      cursor: pointer;
       border: 0;
       background: none;
       font-size: inherit;
@@ -35,6 +38,11 @@
       line-height: inherit;
       font-weight: inherit;
       letter-spacing: inherit;
+
+      &:disabled {
+        cursor: default;
+        opacity: 0.5;
+      }
     }
   }
 }

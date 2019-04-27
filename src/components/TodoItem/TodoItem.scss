@@ -27,6 +27,7 @@
     border-radius: 0.3rem;
     display: inline-block;
     position: relative;
+    cursor: pointer;
   }
 
   input:active,
@@ -56,6 +57,10 @@
   p {
     margin: 0;
     color: $color-secondary;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
   }
 
   &.complete {

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { todoItemType } from 'helpers/types';
+
 import './TodoItem.scss';
 
 class TodoItem extends Component {
@@ -11,18 +13,31 @@ class TodoItem extends Component {
   }
 
   handleOnChange() {
-    const { id, isComplete, onToggle } = this.props;
+    const { todo, onToggle } = this.props;
 
     if (onToggle) {
-      onToggle({
-        id,
-        isComplete: !isComplete,
-      });
+      onToggle(todo.id);
     }
   }
 
+  handleOnDoubleClick(todoId) {
+    const { onSelect } = this.props;
+
+    return e => {
+      e.preventDefault();
+
+      if (onSelect) {
+        onSelect(todoId);
+      }
+
+      return false;
+    };
+  }
+
   render() {
-    const { text, isComplete } = this.props;
+    const {
+      todo: { id, text, isComplete },
+    } = this.props;
 
     return (
       <div
@@ -37,7 +52,7 @@ class TodoItem extends Component {
           aria-checked={isComplete}
           checked={isComplete}
         />
-        <p>{text}</p>
+        <p onDoubleClick={this.handleOnDoubleClick(id)}>{text}</p>
       </div>
     );
   }
@@ -45,14 +60,13 @@ class TodoItem extends Component {
 
 TodoItem.propTypes = {
   onToggle: PropTypes.func,
-  text: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  isComplete: PropTypes.bool,
+  onSelect: PropTypes.func,
+  todo: todoItemType.isRequired,
 };
 
 TodoItem.defaultProps = {
-  isComplete: false,
   onToggle: null,
+  onSelect: null,
 };
 
 export default TodoItem;

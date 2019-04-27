@@ -4,39 +4,57 @@ import TodoInput from 'components/TodoInput';
 import TodoItem from 'components/TodoItem';
 import TodoList from 'components/TodoList';
 
+import TodoContainer from 'containers/TodoContainer';
+
 import logo from 'assets/images/logo.svg';
 
 import './App.scss';
 
-const fakeData = [
-  {
-    id: 1,
-    text: 'Donec feugiat diam et ultricies sollicitudin.',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    text: 'Vestibulum luctus massa et sollicitudin blandit.',
-    isComplete: true,
-  },
-  {
-    id: 3,
-    text: 'Phasellus ut nulla sollicitudin quam tempus eleifend.',
-    isComplete: false,
-  },
-];
-
 export default () => (
   <div className="app__component">
     <img className="app-logo" src={logo} alt="ToDo App" />
-    <div className="app-contents">
-      <TodoInput />
+    <TodoContainer>
+      {({
+        currentTodo,
+        currentFilter,
+        todoItems,
+        filters,
+        showCompletedItems,
+        remainingItemCount,
+        onFilterChange,
+        onToggleVisibility,
+        onToggleTodoItem,
+        onTodoItemSelect,
+        onTodoInputChange,
+        onTodoTextKeyUp,
+      }) => (
+        <div className="app-contents">
+          <TodoInput
+            todo={currentTodo}
+            onTextChange={onTodoInputChange}
+            onTextKeyUp={onTodoTextKeyUp}
+          />
 
-      <TodoList>
-        {fakeData.map(data => (
-          <TodoItem key={data.id} {...data} />
-        ))}
-      </TodoList>
-    </div>
+          <TodoList
+            filters={filters}
+            showCompletedItems={showCompletedItems}
+            currentFilter={currentFilter}
+            onFilterChange={onFilterChange}
+            onToggleVisibility={onToggleVisibility}
+            remainingItemCount={remainingItemCount}
+            hideFooter={todoItems.length <= 0}
+          >
+            {todoItems.map(todoItem => (
+              <TodoItem
+                key={todoItem.id}
+                todo={todoItem}
+                onToggle={onToggleTodoItem}
+                onSelect={onTodoItemSelect}
+              />
+            ))}
+          </TodoList>
+        </div>
+      )}
+    </TodoContainer>
   </div>
 );

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { todoItemType } from 'helpers/types';
+
 import './TodoInput.scss';
 
 class TodoInput extends Component {
   constructor(props) {
     super(props);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
     this.inputRef = React.createRef();
   }
 
@@ -22,8 +25,16 @@ class TodoInput extends Component {
     }
   }
 
+  handleOnKeyUp(e) {
+    const { onTextKeyUp } = this.props;
+
+    if (onTextKeyUp) {
+      onTextKeyUp(e);
+    }
+  }
+
   render() {
-    const { text } = this.props;
+    const { todo } = this.props;
 
     return (
       <div className="todo-input__component">
@@ -31,7 +42,8 @@ class TodoInput extends Component {
           ref={this.inputRef}
           type="text"
           onChange={this.handleOnChange}
-          value={text}
+          onKeyUp={this.handleOnKeyUp}
+          value={todo.text}
           placeholder="What need to be done?"
         />
       </div>
@@ -41,12 +53,14 @@ class TodoInput extends Component {
 
 TodoInput.propTypes = {
   onTextChange: PropTypes.func,
-  text: PropTypes.string,
+  onTextKeyUp: PropTypes.func,
+  todo: todoItemType,
 };
 
 TodoInput.defaultProps = {
   onTextChange: null,
-  text: '',
+  onTextKeyUp: null,
+  todo: { id: null, text: '', isComplete: false },
 };
 
 export default TodoInput;
