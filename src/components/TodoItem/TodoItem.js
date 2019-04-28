@@ -10,6 +10,8 @@ class TodoItem extends Component {
   constructor(props) {
     super(props);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnDoubleClick = this.handleOnDoubleClick.bind(this);
+    this.handleOnDeleteClick = this.handleOnDeleteClick.bind(this);
   }
 
   handleOnChange() {
@@ -28,6 +30,18 @@ class TodoItem extends Component {
 
       if (onSelect) {
         onSelect(todoId);
+      }
+
+      return false;
+    };
+  }
+
+  handleOnDeleteClick(todoId) {
+    const { onDelete } = this.props;
+
+    return () => {
+      if (onDelete) {
+        onDelete(todoId);
       }
 
       return false;
@@ -53,6 +67,9 @@ class TodoItem extends Component {
           checked={isComplete}
         />
         <p onDoubleClick={this.handleOnDoubleClick(id)}>{text}</p>
+        <button type="button" onClick={this.handleOnDeleteClick(id)}>
+          Delete
+        </button>
       </div>
     );
   }
@@ -61,12 +78,14 @@ class TodoItem extends Component {
 TodoItem.propTypes = {
   onToggle: PropTypes.func,
   onSelect: PropTypes.func,
+  onDelete: PropTypes.func,
   todo: todoItemType.isRequired,
 };
 
 TodoItem.defaultProps = {
   onToggle: null,
   onSelect: null,
+  onDelete: null,
 };
 
 export default TodoItem;

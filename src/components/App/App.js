@@ -27,6 +27,7 @@ export default () => (
         onTodoItemSelect,
         onTodoInputChange,
         onTodoTextKeyUp,
+        onTodoItemDelete,
       }) => (
         <div className="app-contents">
           <TodoInput
@@ -50,6 +51,7 @@ export default () => (
                 todo={todoItem}
                 onToggle={onToggleTodoItem}
                 onSelect={onTodoItemSelect}
+                onDelete={onTodoItemDelete}
               />
             ))}
           </TodoList>

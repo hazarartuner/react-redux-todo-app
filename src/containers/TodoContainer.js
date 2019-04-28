@@ -23,6 +23,7 @@ class TodoContainer extends Component {
     this.handleOnTodoItemSelect = this.handleOnTodoItemSelect.bind(this);
     this.handleOnTodoInputChange = this.handleOnTodoInputChange.bind(this);
     this.handleOnTodoTextKeyUp = this.handleOnTodoTextKeyUp.bind(this);
+    this.handleOnDeleteTodoItem = this.handleOnDeleteTodoItem.bind(this);
   }
 
   handleOnFilterChange(filter) {
@@ -114,6 +115,20 @@ class TodoContainer extends Component {
     }
   }
 
+  handleOnDeleteTodoItem(todoId) {
+    const { todoItems } = this.state;
+
+    this.setState({
+      todoItems: todoItems.reduce((acc, curr) => {
+        if (curr.id !== todoId) {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, []),
+    });
+  }
+
   render() {
     const { children } = this.props;
     const {
@@ -146,6 +161,7 @@ class TodoContainer extends Component {
       onTodoItemSelect: this.handleOnTodoItemSelect,
       onTodoInputChange: this.handleOnTodoInputChange,
       onTodoTextKeyUp: this.handleOnTodoTextKeyUp,
+      onTodoItemDelete: this.handleOnDeleteTodoItem,
     });
   }
 }
