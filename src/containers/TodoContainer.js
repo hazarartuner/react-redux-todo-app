@@ -142,6 +142,7 @@ class TodoContainer extends Component {
     return children({
       currentTodo,
       currentFilter,
+      allTodoItemsCount: todoItems.length,
       todoItems: todoItems.filter(todoItem => {
         if (!currentFilter) {
           return showCompletedItems ? true : todoItem.isComplete === false;

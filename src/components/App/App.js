@@ -21,6 +21,7 @@ export default () => (
         filters,
         showCompletedItems,
         remainingItemCount,
+        allTodoItemsCount,
         onFilterChange,
         onToggleVisibility,
         onToggleTodoItem,
@@ -43,7 +44,7 @@ export default () => (
             onFilterChange={onFilterChange}
             onToggleVisibility={onToggleVisibility}
             remainingItemCount={remainingItemCount}
-            hideFooter={todoItems.length <= 0}
+            hideFooter={allTodoItemsCount <= 0}
           >
             {todoItems.map(todoItem => (
               <TodoItem
