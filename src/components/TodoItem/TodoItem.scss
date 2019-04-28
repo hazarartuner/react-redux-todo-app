@@ -4,7 +4,7 @@
   width: 100%;
   height: 5rem;
   display: grid;
-  grid-template-columns: 3rem 1fr 6rem;
+  grid-template-columns: 3rem 1fr 4rem;
   align-items: center;
   border-top: solid 0.1rem rgba(108, 117, 125, 0.2);
   border-bottom: solid 0.1rem rgba(108, 117, 125, 0.2);
@@ -64,7 +64,7 @@
   }
 
   button {
-    width: 6rem;
+    width: 100%;
     height: 3rem;
     background: $color-danger;
     border-radius: 0.5rem;
@@ -72,6 +72,10 @@
     font-weight: bold;
     font-size: 1.1rem;
     cursor: pointer;
+
+    img {
+      height: 70%;
+    }
   }
 
   &.complete {

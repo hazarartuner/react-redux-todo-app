@@ -6,6 +6,8 @@ import { todoItemType } from 'helpers/types';
 
 import ConfirmModal from 'components/ConfirmModal';
 
+import trashIcon from 'assets/images/trash.svg';
+
 import './TodoItem.scss';
 
 class TodoItem extends Component {
@@ -100,7 +102,7 @@ class TodoItem extends Component {
             onClick={this.handleOnDeleteClick}
             disabled={isComplete}
           >
-            Delete
+            <img src={trashIcon} alt="trash" />
           </button>
         </div>
       </Fragment>
