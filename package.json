@@ -1,10 +1,9 @@
 {
-  "name": "solvoyo-challenge",
+  "name": "react-redux-todo-app",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Mehmet Hazar Artuner",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "webpack-dev-server --open --hotOnly --config webpack.dev.js",
     "build": "NODE_ENV=production webpack --config webpack.prod.js",
