@@ -12,6 +12,8 @@ const appState = localStorage.getItem('app-state');
 const initialState = appState ? fromJS(JSON.parse(appState)) : undefined;
 const store = configureStore(initialState);
 
+// region Schedule task to store application state
+// The pattern I used: https://philipwalton.com/articles/idle-until-urgent/
 const queue = new IdleQueue({
   ensureTasksRun: true,
 });
@@ -27,6 +29,7 @@ store.subscribe(() => {
     localStorage.setItem('app-state', jsonData);
   });
 });
+// endregion
 
 render(
   <Provider store={store}>
