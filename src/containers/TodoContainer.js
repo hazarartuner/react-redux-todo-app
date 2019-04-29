@@ -91,7 +91,7 @@ class TodoContainer extends Component {
       } else {
         _addTodo({
           ...currentTodo,
-          id: new Date().getTime(),
+          id: new Date().getTime().toString(),
         });
       }
 

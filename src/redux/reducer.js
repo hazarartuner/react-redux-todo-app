@@ -18,21 +18,21 @@ export default (state = initialState, action) => {
     case Types.ADD_TODO: {
       const { todo } = action.payload;
 
-      return state.setIn(['todoItems', todo.id], Map(todo));
+      return state.setIn(['todoItems', todo.id.toString()], Map(todo));
     }
 
     case Types.UPDATE_TODO: {
       const { todo } = action.payload;
 
-      return state.setIn(['todoItems', todo.id], Map(todo));
+      return state.setIn(['todoItems', todo.id.toString()], Map(todo));
     }
 
     case Types.TOGGLE_TODO: {
       const { todoId } = action.payload;
-      const todo = state.getIn(['todoItems', todoId]);
+      const todo = state.getIn(['todoItems', todoId.toString()]);
 
       return state.setIn(
-        ['todoItems', todoId],
+        ['todoItems', todoId.toString()],
         todo.set('isComplete', !todo.get('isComplete')),
       );
     }
@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
     case Types.REMOVE_TODO: {
       const { todoId } = action.payload;
 
-      return state.deleteIn(['todoItems', todoId]);
+      return state.deleteIn(['todoItems', todoId.toString()]);
     }
 
     case Types.UPDATE_CURRENT_TODO: {
