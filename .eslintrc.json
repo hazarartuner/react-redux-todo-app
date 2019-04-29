@@ -20,6 +20,8 @@
         "config": "./webpack.common.js"
       }
     }
+  },
+  "globals": {
+    "window": true
   }
 }
-

@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --open --hotOnly --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "devDependencies": {
@@ -38,9 +38,13 @@
   },
   "dependencies": {
     "classnames": "2.2.6",
+    "immutable": "4.0.0-rc.12",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
+    "react-redux": "7.0.3",
+    "redux": "4.0.1",
+    "reselect": "4.0.0",
     "webpack": "4.30.0",
     "webpack-merge": "4.2.1"
   },

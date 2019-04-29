@@ -21,7 +21,7 @@ export default () => (
         filters,
         showCompletedItems,
         remainingItemCount,
-        allTodoItemsCount,
+        allItemsCount,
         onFilterChange,
         onToggleVisibility,
         onToggleTodoItem,
@@ -44,17 +44,18 @@ export default () => (
             onFilterChange={onFilterChange}
             onToggleVisibility={onToggleVisibility}
             remainingItemCount={remainingItemCount}
-            hideFooter={allTodoItemsCount <= 0}
+            hideFooter={allItemsCount <= 0}
           >
-            {todoItems.map(todoItem => (
-              <TodoItem
-                key={todoItem.id}
-                todo={todoItem}
-                onToggle={onToggleTodoItem}
-                onSelect={onTodoItemSelect}
-                onDelete={onTodoItemDelete}
-              />
-            ))}
+            {todoItems &&
+              todoItems.map(todoItem => (
+                <TodoItem
+                  key={todoItem.id}
+                  todo={todoItem}
+                  onToggle={onToggleTodoItem}
+                  onSelect={onTodoItemSelect}
+                  onDelete={onTodoItemDelete}
+                />
+              ))}
           </TodoList>
         </div>
       )}

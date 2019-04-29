@@ -39,7 +39,7 @@ class TodoItem extends Component {
     e.preventDefault();
 
     if (onSelect) {
-      onSelect(todo.id);
+      onSelect(todo);
     }
   }
 

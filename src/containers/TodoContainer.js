@@ -1,21 +1,29 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { todoItemType, filterType } from 'helpers/types';
+import {
+  addTodo,
+  updateTodo,
+  toggleTodo,
+  removeTodo,
+  updateCurrentTodo,
+  resetCurrentTodo,
+  changeFilter,
+  setCompletedItemsVisibility,
+} from 'redux/actions';
+
+import {
+  todoItemsSelector,
+  remainingItemCountSelector,
+  allItemsCountSelector,
+  filtersSelector,
+  currentTodoSelector,
+} from 'redux/selectors';
 
 class TodoContainer extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      currentTodo: { id: null, text: '', isComplete: false },
-      showCompletedItems: true,
-      currentFilter: '',
-      filters: [
-        { value: '', label: 'All' },
-        { value: 'active', label: 'Active' },
-        { value: 'complete', label: 'Completed' },
-      ],
-      todoItems: [],
-    };
 
     this.handleOnFilterChange = this.handleOnFilterChange.bind(this);
     this.handleOnToggleVisibility = this.handleOnToggleVisibility.bind(this);
@@ -27,133 +35,96 @@ class TodoContainer extends Component {
   }
 
   handleOnFilterChange(filter) {
-    const { showCompletedItems } = this.state;
+    const {
+      showCompletedItems,
+      setCompletedItemsVisibility: _setCompletedItemsVisibility,
+      changeFilter: _changeFilter,
+    } = this.props;
 
-    this.setState({
-      currentFilter: filter,
-      showCompletedItems: filter === '' ? true : showCompletedItems,
-    });
+    _changeFilter(filter);
+    _setCompletedItemsVisibility(filter === '' ? true : showCompletedItems);
   }
 
   handleOnToggleVisibility() {
-    const { showCompletedItems } = this.state;
+    const {
+      showCompletedItems,
+      setCompletedItemsVisibility: _setCompletedItemsVisibility,
+    } = this.props;
 
-    this.setState(() => ({
-      showCompletedItems: !showCompletedItems,
-    }));
+    _setCompletedItemsVisibility(!showCompletedItems);
   }
 
   handleOnToggleTodoItem(todoId) {
-    const { todoItems } = this.state;
+    const { toggleTodo: _toggleTodo } = this.props;
 
-    this.setState({
-      todoItems: todoItems.reduce((acc, curr) => {
-        acc.push({
-          ...curr,
-          isComplete: curr.id === todoId ? !curr.isComplete : curr.isComplete,
-        });
-
-        return acc;
-      }, []),
-    });
+    _toggleTodo(todoId);
   }
 
-  handleOnTodoItemSelect(todoId) {
-    const { todoItems } = this.state;
-    const selectedTodo =
-      todoItems.find(todoItem => todoItem.id === todoId) || {};
+  handleOnTodoItemSelect(todo) {
+    const { updateCurrentTodo: _updateCurrentTodo } = this.props;
 
-    if (!selectedTodo.isComplete) {
-      this.setState({
-        currentTodo: {
-          ...selectedTodo,
-        },
-      });
+    if (!todo.isComplete) {
+      _updateCurrentTodo(todo);
     }
   }
 
   handleOnTodoInputChange(e) {
-    const { currentTodo } = this.state;
+    const { currentTodo, updateCurrentTodo: _updateCurrentTodo } = this.props;
 
-    this.setState({
-      currentTodo: {
-        ...currentTodo,
-        text: e.target.value,
-      },
+    _updateCurrentTodo({
+      ...currentTodo,
+      text: e.target.value,
     });
   }
 
   handleOnTodoTextKeyUp(e) {
-    if (e.keyCode === 13) {
-      const { currentTodo, todoItems } = this.state;
-      const newState = {};
+    const {
+      currentTodo,
+      addTodo: _addTodo,
+      updateTodo: _updateTodo,
+      resetCurrentTodo: _resetCurrentTodo,
+    } = this.props;
 
-      newState.currentTodo = { id: null, text: '', isComplete: false };
-
+    if (e.keyCode === 13 && currentTodo.text.length > 0) {
       if (currentTodo.id) {
-        newState.todoItems = todoItems.reduce((acc, curr) => {
-          acc.push({
-            ...curr,
-            text: currentTodo.id === curr.id ? currentTodo.text : curr.text,
-          });
-
-          return acc;
-        }, []);
+        _updateTodo(currentTodo);
       } else {
-        newState.todoItems = [
-          ...todoItems,
-          {
-            ...currentTodo,
-            id: new Date().getTime() + Math.ceil(Math.random() * 10000),
-          },
-        ];
+        _addTodo({
+          ...currentTodo,
+          id: new Date().getTime(),
+        });
       }
 
-      this.setState(newState);
+      _resetCurrentTodo();
 
       e.preventDefault();
     }
   }
 
   handleOnDeleteTodoItem(todoId) {
-    const { todoItems } = this.state;
+    const { removeTodo: _removeTodo } = this.props;
 
-    this.setState({
-      todoItems: todoItems.reduce((acc, curr) => {
-        if (curr.id !== todoId) {
-          acc.push(curr);
-        }
-
-        return acc;
-      }, []),
-    });
+    _removeTodo(todoId);
   }
 
   render() {
-    const { children } = this.props;
     const {
-      currentTodo,
-      currentFilter,
-      filters,
+      children,
       todoItems,
+      currentTodo,
+      filters,
+      currentFilter,
+      allItemsCount,
+      remainingItemCount,
       showCompletedItems,
-    } = this.state;
+    } = this.props;
 
     return children({
       currentTodo,
       currentFilter,
-      allTodoItemsCount: todoItems.length,
-      todoItems: todoItems.filter(todoItem => {
-        if (!currentFilter) {
-          return showCompletedItems ? true : todoItem.isComplete === false;
-        }
-
-        return currentFilter === 'active'
-          ? todoItem.isComplete === false
-          : todoItem.isComplete === true;
-      }),
-      remainingItemCount: todoItems.filter(todoItem => !todoItem.isComplete)
-        .length,
+      todoItems,
+      allItemsCount,
+      remainingItemCount,
       filters,
       showCompletedItems,
       onFilterChange: this.handleOnFilterChange,
@@ -169,6 +140,59 @@ class TodoContainer extends Component {
 
 TodoContainer.propTypes = {
   children: PropTypes.func.isRequired,
+  todoItems: PropTypes.arrayOf(todoItemType),
+  currentTodo: todoItemType,
+  filters: PropTypes.arrayOf(filterType),
+  currentFilter: PropTypes.string,
+  allItemsCount: PropTypes.number,
+  showCompletedItems: PropTypes.bool,
+  remainingItemCount: PropTypes.number,
+  addTodo: PropTypes.func,
+  updateTodo: PropTypes.func,
+  toggleTodo: PropTypes.func,
+  removeTodo: PropTypes.func,
+  updateCurrentTodo: PropTypes.func,
+  resetCurrentTodo: PropTypes.func,
+  setCompletedItemsVisibility: PropTypes.func,
+  changeFilter: PropTypes.func,
 };
 
-export default TodoContainer;
+TodoContainer.defaultProps = {
+  todoItems: [],
+  currentTodo: { id: null, text: '', isComplete: false },
+  filters: [],
+  currentFilter: '',
+  remainingItemCount: 0,
+  allItemsCount: 0,
+  showCompletedItems: false,
+  addTodo: null,
+  updateTodo: null,
+  toggleTodo: null,
+  removeTodo: null,
+  updateCurrentTodo: null,
+  resetCurrentTodo: null,
+  setCompletedItemsVisibility: null,
+  changeFilter: null,
+};
+
+export default connect(
+  state => ({
+    todoItems: todoItemsSelector(state),
+    currentTodo: currentTodoSelector(state),
+    allItemsCount: allItemsCountSelector(state),
+    remainingItemCount: remainingItemCountSelector(state),
+    filters: filtersSelector(state),
+    currentFilter: state.get('currentFilter'),
+    showCompletedItems: state.get('showCompletedItems'),
+  }),
+  {
+    addTodo,
+    updateTodo,
+    toggleTodo,
+    removeTodo,
+    updateCurrentTodo,
+    resetCurrentTodo,
+    setCompletedItemsVisibility,
+    changeFilter,
+  },
+)(TodoContainer);
