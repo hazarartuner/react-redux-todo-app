@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import './ConfirmModal.scss';
 
 const modalRoot = document.getElementById('modal-root');
 
-class ConfirmModal extends Component {
+class ConfirmModal extends PureComponent {
   constructor(props) {
     super(props);
     this.el = document.createElement('div');

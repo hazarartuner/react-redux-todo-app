@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -10,7 +10,7 @@ import trashIcon from 'assets/images/trash.svg';
 
 import './TodoItem.scss';
 
-class TodoItem extends Component {
+class TodoItem extends PureComponent {
   constructor(props) {
     super(props);
 

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { todoItemType } from 'helpers/types';
 
 import './TodoInput.scss';
 
-class TodoInput extends Component {
+class TodoInput extends PureComponent {
   constructor(props) {
     super(props);
     this.handleOnChange = this.handleOnChange.bind(this);

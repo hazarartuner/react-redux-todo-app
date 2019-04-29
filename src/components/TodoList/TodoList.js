@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -6,7 +6,7 @@ import { filterType } from 'helpers/types';
 
 import './TodoList.scss';
 
-class TodoList extends Component {
+class TodoList extends PureComponent {
   constructor(props) {
     super(props);
     this.handleOnFilterChange = this.handleOnFilterChange.bind(this);
